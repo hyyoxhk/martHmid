@@ -37,7 +37,9 @@ deps = [
 inc = include_directories('.')
 
 srcs = [
-	'main.c'
+	'mosq.c',
+	'main.c',
+	'pctl.c'
 ]
 
 executable(

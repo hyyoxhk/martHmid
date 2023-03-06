@@ -36,3 +36,28 @@ pthread_t start_thread(void *(* start_routine) (void *), void *arg)
 	}
 	return id;
 }
+
+/*
+ * Internal threads should signal they are ready if internal subprocesses
+ * can be spawned after them
+ */
+void thread_ready(void)
+{
+	pthread_mutex_lock(&threads_towait_lock);
+	threads_towait--;
+	if (threads_towait == 0)
+		pthread_cond_broadcast(&threads_towait_cond);
+	pthread_mutex_unlock(&threads_towait_lock);
+}
+
+/*
+ * Wait for all threads to have signaled they're ready
+ */
+void wait_threads_ready(void)
+{
+	pthread_mutex_lock(&threads_towait_lock);
+	while (threads_towait != 0)
+		pthread_cond_wait(&threads_towait_cond, &threads_towait_lock);
+	pthread_mutex_unlock(&threads_towait_lock);
+}
+

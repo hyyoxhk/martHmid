@@ -6,6 +6,6 @@
 #ifndef _MOSQ_H_
 #define _MOSQ_H_
 
-void *mosq_initializer(void *data)
+void *mosq_initializer(void *data);
 
 #endif

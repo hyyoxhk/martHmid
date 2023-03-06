@@ -10,4 +10,8 @@
 
 pthread_t start_thread(void *(* start_routine) (void *), void *arg);
 
+void thread_ready(void);
+
+void wait_threads_ready(void);
+
 #endif

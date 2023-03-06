@@ -4,6 +4,7 @@
  */
 
 #include <stdio.h>
+#include <unistd.h>
 
 #include "pctrl.h"
 #include "mosq.h"
@@ -21,8 +22,11 @@ int main(int argc, char const *argv[])
 
 	mosq_daemon = start_thread(mosq_initializer, &cfg);
 
-	pthread_join(mosq_daemon, NULL);
+	/* wait for threads to be done before starting children */
+	wait_threads_ready();
 
+	pthread_join(mosq_daemon, NULL);
+	//mosq_initializer();
 	return 0;
 }
  
